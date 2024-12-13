@@ -4,10 +4,7 @@ import com.aos.tp.model.User;
 import com.aos.tp.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -29,14 +26,17 @@ public class UserController {
         return ResponseEntity.ok().body(userService.createUser(user));
     }
 
-//    /**
-//     * Login user
-//     * @param userName of user
-//     * @param password of user
-//     * @return JWT access token
-//     */
-//    @PostMapping("/login")
-//    public String login(@RequestBody @Valid String userName,@RequestBody @Valid  String password) {
-//        return userService.authenticateUser(userName, password);
-//    }
+    /**
+     * Login user
+     * @return JWT access token
+     */
+    @PostMapping("/login")
+    public String login(@RequestBody User user) {
+        return userService.authenticateUser(user.getUsername(),user.getPassword());
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUser(@PathVariable String username) {
+        return ResponseEntity.ok().body(userService.getUserByUsername(username));
+    }
 }

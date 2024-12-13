@@ -39,15 +39,15 @@ public class UserService {
      * @param password of user
      * @return generated token
      */
-//    public String authenticateUser(String username, String password) {
-//        User user = userRepository.findByUsername(username)
-//                .orElseThrow(() -> new RuntimeException("User not found"));
-//        if (passwordEncoder.matches(password, user.getPassword())) {
-//            return generateToken(user);
-//        } else {
-//            throw new RuntimeException("Invalid credentials");
-//        }
-//    }
+    public String authenticateUser(String username, String password) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        if (passwordEncoder.matches(password, user.getPassword())) {
+            return generateToken(user);
+        } else {
+            throw new RuntimeException("Invalid credentials");
+        }
+    }
 
     /**
      * Generate token
@@ -63,4 +63,8 @@ public class UserService {
                 .compact();
     }
 
+    public User getUserByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }
