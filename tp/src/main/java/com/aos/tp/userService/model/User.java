@@ -1,4 +1,4 @@
-package com.aos.tp.model;
+package com.aos.tp.userService.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package com.aos.tp.config;
+package com.aos.tp.userService.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

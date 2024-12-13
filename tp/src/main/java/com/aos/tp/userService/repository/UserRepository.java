@@ -1,6 +1,6 @@
-package com.aos.tp.repository;
+package com.aos.tp.userService.repository;
 
-import com.aos.tp.model.User;
+import com.aos.tp.userService.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

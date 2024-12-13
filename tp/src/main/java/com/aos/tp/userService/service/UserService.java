@@ -1,7 +1,7 @@
-package com.aos.tp.service;
+package com.aos.tp.userService.service;
 
-import com.aos.tp.model.User;
-import com.aos.tp.repository.UserRepository;
+import com.aos.tp.userService.model.User;
+import com.aos.tp.userService.repository.UserRepository;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.crypto.password.PasswordEncoder;

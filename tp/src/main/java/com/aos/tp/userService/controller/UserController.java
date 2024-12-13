@@ -1,7 +1,8 @@
-package com.aos.tp.controller;
 
-import com.aos.tp.model.User;
-import com.aos.tp.service.UserService;
+package com.aos.tp.userService.controller;
+
+import com.aos.tp.userService.model.User;
+import com.aos.tp.userService.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
