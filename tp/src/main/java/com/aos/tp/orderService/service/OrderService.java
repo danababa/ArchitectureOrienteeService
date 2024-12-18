@@ -40,8 +40,8 @@ public class OrderService {
      * @param orderId of order
      * @return order
      */
-    public Order getOrderById(String orderId) {
-        return orderRepository.findByOrderId(orderId)
+    public Order getOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
     }
 
@@ -59,8 +59,8 @@ public class OrderService {
      * @param updatedOrder model
      * @return updated order
      */
-    public Order updateOrder(String orderId, Order updatedOrder) {
-        Order order = orderRepository.findByOrderId(orderId)
+    public Order updateOrder(Long orderId, Order updatedOrder) {
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         order.setQuantity(updatedOrder.getQuantity());
         return orderRepository.save(order);
@@ -70,8 +70,8 @@ public class OrderService {
      * Delete order
      * @param orderId of order
      */
-    public void deleteOrder(String orderId) {
-        Order order = orderRepository.findByOrderId(orderId)
+    public void deleteOrder(Long orderId) {
+        Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         orderRepository.delete(order);
     }

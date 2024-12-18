@@ -23,6 +23,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/users/register").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users/{username}").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/orders/create").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/orders").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
                 )
                 .sessionManagement(session -> session

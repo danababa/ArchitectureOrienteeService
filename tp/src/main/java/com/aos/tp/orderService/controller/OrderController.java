@@ -4,6 +4,7 @@ package com.aos.tp.orderService.controller;
 import com.aos.tp.orderService.model.Order;
 import com.aos.tp.orderService.service.OrderService;
 import com.aos.tp.userService.service.UserService;
+import jakarta.validation.Valid;
 import lombok.Getter;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,12 +25,12 @@ public class OrderController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Order> createOrder(@RequestBody Order order) {
+    public ResponseEntity<Order> createOrder(@Valid  @RequestBody Order order) {
         return ResponseEntity.ok().body(orderService.createOrder(order));
     }
 
     @GetMapping("/{orderId}")
-    public ResponseEntity<Order> getOrderById(@PathVariable String orderId) {
+    public ResponseEntity<Order> getOrderById(@PathVariable Long orderId) {
         return ResponseEntity.ok().body(orderService.getOrderById(orderId));
     }
 
@@ -39,12 +40,12 @@ public class OrderController {
     }
 
     @PutMapping("/{orderId}")
-    public ResponseEntity<Order> updateOrder(@PathVariable String orderId, @RequestBody Order order) {
+    public ResponseEntity<Order> updateOrder(@PathVariable Long orderId, @RequestBody Order order) {
         return ResponseEntity.ok().body(orderService.updateOrder(orderId, order));
     }
 
     @DeleteMapping("/{orderId}")
-    public void deleteOrder(@PathVariable String orderId) {
+    public void deleteOrder(@PathVariable Long orderId) {
         orderService.deleteOrder(orderId);
     }
 
