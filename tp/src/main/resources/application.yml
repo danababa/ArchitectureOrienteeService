@@ -1,0 +1,27 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: user-service
+          uri: http://localhost:8085 # URI de la première API cible (service utilisateur)
+          predicates:
+            - Path=/users/** # Route pour toutes les requêtes ayant ce préfixe
+          filters:
+            - StripPrefix=1
+
+        - id: order-service
+          uri: http://localhost:8082 # URI de la deuxième API cible (service commande)
+          predicates:
+            - Path=/orders/** # Route pour toutes les requêtes ayant ce préfixe
+          filters:
+            - StripPrefix=1
+            - name: JwtAuthorizationFilter # Applique le filtre JWT personnalisé
+
+jwt:
+  secret: MySecretKey # Clé secrète pour le JWT
+  expiration: 3600 # Durée d'expiration du JWT en secondes
+  header: Authorization # En-tête contenant le token JWT
+  prefix: Bearer # Préfixe du token JWT
+
+server:
+  port: 8083 # Le port où l'API Gateway écoute
