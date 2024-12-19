@@ -9,9 +9,11 @@ public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(name = "user_id", nullable = false)
     private Long userId;
+    @Column(name = "product", nullable = false)
     private String product;
+    @Column(name = "quantity", nullable = false)
     private int quantity;
 
     public Order() {

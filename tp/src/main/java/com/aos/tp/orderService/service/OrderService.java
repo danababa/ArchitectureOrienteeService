@@ -31,8 +31,7 @@ public class OrderService {
             throw new RuntimeException("Order already exists");
         }
 
-        Order order = new Order();
-        return orderRepository.save(order);
+        return orderRepository.save(newOrder);
     }
 
     /**
