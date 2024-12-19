@@ -4,6 +4,7 @@ import com.aos.tp.orderService.model.Order;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -13,5 +14,7 @@ public interface OrderRepository  extends JpaRepository<Order, Long> {
 
     Optional<Order> findByUserId(Long userId);
 
-    Optional<Object> findByProduct(String product);
+    Optional<Order> findByProduct(String product);
+
+    List<Order> findAllByUserId (Long userId);
 }

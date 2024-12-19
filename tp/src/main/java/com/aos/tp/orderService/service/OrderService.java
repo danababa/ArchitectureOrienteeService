@@ -76,6 +76,8 @@ public class OrderService {
         orderRepository.delete(order);
     }
 
-
+    public List<Order> getOrdersByUserId(Long userId) {
+        return orderRepository.findAllByUserId(userId);
+    }
 
 }
