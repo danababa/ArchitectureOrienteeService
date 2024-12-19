@@ -33,3 +33,7 @@ build/
 .vscode/
 
 tp/data/*.mv.db
+
+# Ignore IntelliJ IDEA specific files
+.idea/compiler.xml
+.idea/vcs.xml
