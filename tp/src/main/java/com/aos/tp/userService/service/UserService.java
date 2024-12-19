@@ -1,22 +1,21 @@
 package com.aos.tp.userService.service;
 
+import com.aos.tp.userService.config.JwtTokenProvider;
 import com.aos.tp.userService.model.User;
 import com.aos.tp.userService.repository.UserRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Date;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
 
+    private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepository userRepository, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -43,24 +42,10 @@ public class UserService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         if (passwordEncoder.matches(password, user.getPassword())) {
-            return generateToken(user);
+            return jwtTokenProvider.generateToken(username);
         } else {
             throw new RuntimeException("Invalid credentials");
         }
-    }
-
-    /**
-     * Generate token
-     * @param user model
-     * @return generated token string
-     */
-    private String generateToken(User user){
-        return Jwts.builder()
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 86400000)) // 1 day
-                .signWith(SignatureAlgorithm.HS512, "SecretKeyToGenJWTs")
-                .compact();
     }
 
     public User getUserByUsername(String username) {

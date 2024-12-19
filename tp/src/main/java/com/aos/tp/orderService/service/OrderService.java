@@ -27,7 +27,8 @@ public class OrderService {
             throw new IllegalArgumentException("Quantity must be greater than 0");
         }
 
-        if(orderRepository.findByUserId(newOrder.getUserId()).isPresent()){
+        if(orderRepository.findByUserId(newOrder.getUserId()).isPresent()
+                && orderRepository.findByProduct(newOrder.getProduct()).isPresent()){
             throw new RuntimeException("Order already exists");
         }
 
