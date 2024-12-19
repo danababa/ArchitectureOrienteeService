@@ -49,12 +49,6 @@ This project demonstrates a microservices architecture built with Spring Boot, c
 ---
 
 ## Setup and Run Instructions
-### Clone the Repository
-```bash
-$ git clone <repository-url>
-$ cd microservices-architecture
-```
-
 ### Build the Project
 ```bash
 $ mvn clean install
