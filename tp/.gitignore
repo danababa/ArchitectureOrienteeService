@@ -38,4 +38,4 @@ tp/data/*.mv.db
 .idea/workspace.xml
 
 # Ignore data directory
-data/
+data/git
