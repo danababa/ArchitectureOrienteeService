@@ -6,15 +6,18 @@ import org.springframework.stereotype.Component;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
-import java.util.Date;
 
 @Component
 public class JwtTokenProvider {
 
-    private final String secretKey = "MySecretKey"; // Secret key to sign the JWT tokens
+    private final String secretKey = "MySecretKey";
     private final long validityInMilliseconds = 3600000; // Token validity duration (1 hour)
 
-    // Generate a JWT token for the user
+    /**
+     * Generate JWT token
+     * @param username of user
+     * @return JWT token
+     */
     public String generateToken(String username) {
         long now = System.currentTimeMillis();
         long expiry = now + validityInMilliseconds;
@@ -33,7 +36,11 @@ public class JwtTokenProvider {
         return header + "." + encodedPayload + "." + signature;
     }
 
-    // Validate a JWT token
+    /**
+     * Validate the JWT token
+     * @param token of user
+     * @return true if the token is valid, false otherwise
+     */
     public boolean validateToken(String token) {
         try {
             String[] parts = token.split("\\.");
@@ -56,7 +63,11 @@ public class JwtTokenProvider {
         }
     }
 
-    // Extract username from the JWT token
+    /**
+     * Get the username from the token
+     * @param token of user
+     * @return username
+     */
     public String getUsernameFromToken(String token) {
         String[] parts = token.split("\\.");
         if (parts.length != 3) throw new IllegalArgumentException("Invalid token");
@@ -65,7 +76,12 @@ public class JwtTokenProvider {
         return payload.replaceAll(".*\"sub\":\"([^\"]+)\".*", "$1");
     }
 
-    // Method to generate HMAC-SHA256 signature
+    /**
+     * Method to generate HMAC-SHA256 signature
+     * @param data to sign
+     * @param secret key
+     * @return signature
+     */
     private String sign(String data, String secret) {
         try {
             Mac mac = Mac.getInstance("HmacSHA256");
