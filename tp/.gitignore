@@ -38,6 +38,7 @@ tp/data/*.mv.db
 .idea/workspace.xml
 .idea/compiler.xml
 .idea/vcs.xml
+.idea/
 
 # Ignore data directory
-data/git
+data/
