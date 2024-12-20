@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
-
     private final JwtTokenProvider jwtTokenProvider;
     private final PasswordEncoder passwordEncoder;
 
@@ -39,8 +38,10 @@ public class UserService {
      * @return generated token
      */
     public String authenticateUser(String username, String password) {
+
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
         if (passwordEncoder.matches(password, user.getPassword())) {
             return jwtTokenProvider.generateToken(username);
         } else {
@@ -48,8 +49,46 @@ public class UserService {
         }
     }
 
+    /**
+     * Get user by username
+     * @param username of user
+     * @return user
+     */
     public User getUserByUsername(String username) {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+
+    /**
+     * Get user by id
+     * @param id of user
+     * @return user
+     */
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
+
+    /**
+     * Delete user by id
+     * @param id of user
+     */
+    public void deleteUser(Long id) {
+        userRepository.deleteById(id);
+    }
+
+    /**
+     * Update user
+     * @param id of user
+     * @param updatedUser body
+     * @return updated user
+     */
+    public User updateUser(Long id, User updatedUser) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        user.setUsername(updatedUser.getUsername());
+        user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
+        return userRepository.save(user);
     }
 }

@@ -27,20 +27,17 @@ public class JwtAuthenticationFilter implements Filter {
             throws IOException, ServletException {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponse = (HttpServletResponse) response;
-
         String token = extractToken(httpRequest);
 
         if (token != null && jwtTokenProvider.validateToken(token)) {
             String username = jwtTokenProvider.getUsernameFromToken(token);
 
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                    username, null, null  // You can include authorities if needed here
+                    username, null, null
             );
 
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
 
-            // Set the authentication in the SecurityContext
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
@@ -52,7 +49,7 @@ public class JwtAuthenticationFilter implements Filter {
         if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7);  // Remove "Bearer " prefix
         }
-        return null;  // Return null if no token is present
+        return null;  // No token found
     }
 
     @Override
