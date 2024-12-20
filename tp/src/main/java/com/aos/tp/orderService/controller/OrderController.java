@@ -39,7 +39,7 @@ public class OrderController {
      * @param orderId of order
      * @return order
      */
-    @GetMapping("/{orderId}")
+    @GetMapping("/order-id/{orderId}")
     public ResponseEntity<Order> getOrderById(@PathVariable Long orderId) {
         return ResponseEntity.ok().body(orderService.getOrderById(orderId));
     }
@@ -69,7 +69,7 @@ public class OrderController {
      * @param order model
      * @return updated order
      */
-    @PutMapping("/{orderId}")
+    @PutMapping("/update/{orderId}")
     public ResponseEntity<Order> updateOrder(@PathVariable Long orderId, @RequestBody Order order) {
         return ResponseEntity.ok().body(orderService.updateOrder(orderId, order));
     }

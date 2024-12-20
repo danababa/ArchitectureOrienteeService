@@ -5,7 +5,8 @@ import com.aos.tp.userService.model.User;
 import com.aos.tp.userService.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 @Service
 public class UserService {
     private final UserRepository userRepository;
@@ -23,9 +24,9 @@ public class UserService {
      * @param user model
      * @return added user
      */
-    public User createUser (User user){
-        if(userRepository.findByUsername(user.getUsername()).isPresent()){
-            throw new RuntimeException("User already exists");
+    public User createUser(User user) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists");
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
@@ -37,28 +38,17 @@ public class UserService {
      * @param password of user
      * @return generated token
      */
-    public String authenticateUser(String username, String password) {
 
+    public String authenticateUser(String username, String password) {
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
 
         if (passwordEncoder.matches(password, user.getPassword())) {
             return jwtTokenProvider.generateToken(username);
         } else {
-            throw new RuntimeException("Invalid credentials");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");
         }
     }
-
-    /**
-     * Get user by username
-     * @param username of user
-     * @return user
-     */
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
 
     /**
      * Get user by id
@@ -67,7 +57,7 @@ public class UserService {
      */
     public User getUserById(Long id) {
         return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
     /**
@@ -75,6 +65,9 @@ public class UserService {
      * @param id of user
      */
     public void deleteUser(Long id) {
+        if (!userRepository.existsById(id)) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found");
+        }
         userRepository.deleteById(id);
     }
 
@@ -86,7 +79,7 @@ public class UserService {
      */
     public User updateUser(Long id, User updatedUser) {
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
         user.setUsername(updatedUser.getUsername());
         user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
         return userRepository.save(user);

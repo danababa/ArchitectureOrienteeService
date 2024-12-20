@@ -38,21 +38,11 @@ public class UserController {
 
 
     /**
-     * Get user by username
-     * @param username of user
-     * @return user
-     */
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUser(@PathVariable String username) {
-        return ResponseEntity.ok().body(userService.getUserByUsername(username));
-    }
-
-    /**
      * Get user by id
      * @param id of user
      * @return user
      */
-    @GetMapping("/{id}")
+    @GetMapping("/user-id/{id}")
     public ResponseEntity<User> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userService.getUserById(id));
     }
@@ -63,7 +53,7 @@ public class UserController {
      * @param user user body
      * @return updated user
      */
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
         return ResponseEntity.ok().body(userService.updateUser(id, user));
     }
