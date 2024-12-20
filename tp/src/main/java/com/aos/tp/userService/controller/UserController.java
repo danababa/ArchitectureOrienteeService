@@ -36,8 +36,48 @@ public class UserController {
         return userService.authenticateUser(user.getUsername(),user.getPassword());
     }
 
+
+    /**
+     * Get user by username
+     * @param username of user
+     * @return user
+     */
     @GetMapping("/{username}")
     public ResponseEntity<User> getUser(@PathVariable String username) {
         return ResponseEntity.ok().body(userService.getUserByUsername(username));
     }
+
+    /**
+     * Get user by id
+     * @param id of user
+     * @return user
+     */
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        return ResponseEntity.ok().body(userService.getUserById(id));
+    }
+
+    /**
+     * Update user by id
+     * @param id of user
+     * @param user user body
+     * @return updated user
+     */
+    @PutMapping("/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User user) {
+        return ResponseEntity.ok().body(userService.updateUser(id, user));
+    }
+
+    /**
+     * Delete user by id
+     * @param id of user
+     */
+    @DeleteMapping("/{id}")
+    public void deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
+    }
+
+
+
 }
+
