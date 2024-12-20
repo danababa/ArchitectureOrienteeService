@@ -1,112 +1,120 @@
-# Microservices Architecture: User, Order Services, and API Gateway
+# Architecture Microservices : Services Utilisateur, Commande et Passerelle API
 
-## Overview
-This project demonstrates a microservices architecture built with Spring Boot, consisting of:
-- **User Service**: Manages user registration, authentication, and profile management.
-- **Order Service**: Handles order creation, retrieval, and management.
-- **API Gateway**: Facilitates communication between services, secures endpoints with JWT-based authentication, and provides unified access.
+## Aperçu
+
+Ce projet met en œuvre une architecture microservices basée sur Spring Boot, conçue pour répondre aux défis courants des systèmes distribués. L'architecture propose une approche modulaire et évolutive pour gérer les comptes utilisateurs, traiter les commandes et sécuriser la communication via une passerelle API. En isolant les fonctionnalités en services distincts, cette architecture garantit la maintenabilité, la scalabilité et une intégration facile avec d'autres systèmes.
 
 ---
 
-## Features
-### User Service
-- **User Management**:
-  - Register new users.
-  - Authenticate users and generate JWT tokens.
-  - Retrieve user details by ID.
-  - Update and delete user profiles.
-- **Validation**:
-  - Enforces constraints on required fields like `username` and `password`.
+## Fonctionnalités
 
-### Order Service
-- **Order Management**:
-  - Create new orders.
-  - Retrieve orders by ID or user.
-  - Update and delete orders.
-- **Validation**:
-  - Ensures required fields like `product` and `quantity` are provided.
+### Service Utilisateur
 
-### API Gateway
-- **Routing**:
-  - Directs API requests to the appropriate microservices.
-- **Security**:
-  - Secures endpoints with JWT authentication.
-  - Provides a unified entry point for the application.
-- **Simplified Access**:
-  - Exposes user and order APIs under a single gateway endpoint.
+- **Gestion des utilisateurs** :
+  - Enregistrer de nouveaux utilisateurs.
+  - Authentifier les utilisateurs et générer des jetons JWT.
+  - Récupérer les détails des utilisateurs par ID.
+  - Mettre à jour et supprimer les profils utilisateurs.
+- **Validation** :
+  - Imposer des contraintes sur les champs obligatoires comme `username` et `password`.
 
----
+### Service Commande
 
-## Technologies Used
-- **Backend Framework**: Spring Boot 3.4
-- **Database**: H2 Database
-- **ORM**: Hibernate
-- **Dependency Management**: Maven
-- **API Gateway**: Spring Cloud Gateway
-- **Security**: Spring Security with JWT
-- **Testing**: Postman
+- **Gestion des commandes** :
+  - Créer de nouvelles commandes.
+  - Récupérer les commandes par ID ou par utilisateur.
+  - Mettre à jour et supprimer les commandes.
+- **Validation** :
+  - Vérifier que les champs requis comme `userId`, `product` et `quantity` sont fournis.
+
+### Passerelle API
+
+- **Routage** :
+  - Diriger les requêtes API vers les microservices appropriés.
+- **Sécurité** :
+  - Sécuriser les points de terminaison avec l'authentification JWT.
+  - Fournir un point d'accès unifié à l'application.
+- **Simplification de l'accès** :
+  - Exposer les API utilisateur et commande via un point d'entrée unique.
 
 ---
 
-## Setup and Run Instructions
-### Build the Project
+## Technologies Utilisées
+
+- **Framework Backend** : Spring Boot 3.4
+- **Base de Données** : H2 Database
+- **ORM** : Hibernate
+- **Gestion des Dépendances** : Maven
+- **Passerelle API** : Spring Cloud Gateway
+- **Sécurité** : Spring Security avec JWT
+- **Tests** : Postman
+
+---
+
+## Prérequis
+
+- Java 17 ou supérieur
+- Maven 3.8+
+
+---
+
+## Instructions d'installation et d'exécution
+
+### Construire le projet
+
 ```bash
 $ mvn clean install
 ```
 
-### Run the Services
-#### User Service
+### Lancer les services
+
+#### Service Utilisateur
+
 ```bash
 $ cd user-service
 $ mvn spring-boot:run
 ```
-The User Service will start on `http://localhost:8082`.
 
-#### Order Service
-```bash
-$ cd order-service
-$ mvn spring-boot:run
-```
-The Order Service will start on `http://localhost:8083`.
+Le user-service démarre sur `http://localhost:8081`.
 
-#### API Gateway
-```bash
-$ cd api-gateway
-$ mvn spring-boot:run
-```
-The API Gateway will start on `http://localhost:8083`.
+Le order-service démarre sur `http://localhost:8082`.
+
+La Passerelle API démarre sur `http://localhost:8085`.
 
 ---
 
-## API Endpoints
-### User Service
-- **Register User**: `POST /users/register`
-  - Request Body:
+## Points de terminaison API
+
+### Service Utilisateur
+
+- **Enregistrer un utilisateur** : `POST /users/register`
+  - Corps de la requête :
     ```json
     {
       "username": "sampleuser",
       "password": "securepassword"
     }
     ```
-- **Authenticate User**: `POST /users/login`
-  - Request Body:
+- **Authentifier un utilisateur** : `POST /users/login`
+  - Corps de la requête :
     ```json
     {
       "username": "sampleuser",
       "password": "securepassword"
     }
     ```
-  - Response:
+  - Réponse :
     ```json
     {
       "token": "<JWT Token>"
     }
     ```
 
-### Order Service
-- **Create Order**: `POST /orders`
-  - Headers: `Authorization: Bearer <JWT Token>`
-  - Request Body:
+### Service Commande
+
+- **Créer une commande** : `POST /orders`
+  - En-têtes : `Authorization: Bearer <JWT Token>`
+  - Corps de la requête :
     ```json
     {
       "userId": 1,
@@ -114,40 +122,45 @@ The API Gateway will start on `http://localhost:8083`.
       "quantity": 1
     }
     ```
-- **Get Orders by User**: `GET /orders/user/{userId}`
-  - Headers: `Authorization: Bearer <JWT Token>`
+- **Récupérer les commandes par utilisateur** : `GET /orders/user/{userId}`
+  - En-têtes : `Authorization: Bearer <JWT Token>`
 
-### API Gateway
-- **Routing**:
-  - User Service: `/users/**`
-  - Order Service: `/orders/**`
-- **Authentication**:
-  - Requires JWT tokens for secure access.
-  - Example:
-    ```bash
-    curl -H "Authorization: Bearer <JWT Token>" http://localhost:8085/orders
-    ```
+### Passerelle API
+
+- **Routage** :
+  - Service Utilisateur : `/users/**`
+  - Service Commande : `/orders/**`
+- **Authentification** :
+  - Nécessite des jetons JWT pour un accès sécurisé.
 
 ---
 
-## Database Schema
-### User Table
-| Column      | Type        | Constraints         |
-|-------------|-------------|---------------------|
-| `id`        | BIGINT      | Primary Key         |
-| `username`  | VARCHAR(255)| NOT NULL, Unique    |
-| `password`  | VARCHAR(255)| NOT NULL            |
+## Schéma de Base de Données
 
-### Order Table
-| Column      | Type        | Constraints         |
-|-------------|-------------|---------------------|
-| `id`        | BIGINT      | Primary Key         |
-| `user_id`   | BIGINT      | NOT NULL            |
-| `product`   | VARCHAR(255)| NOT NULL            |
-| `quantity`  | INT         | NOT NULL            |
+### Table Utilisateur
+
+| Colonne     | Type         | Contraintes       |
+| ----------- | ------------ | ----------------- |
+| `id`        | BIGINT       | Clé Primaire      |
+| `username`  | VARCHAR(255) | Non Null, Unique  |
+| `password`  | VARCHAR(255) | Non Null          |
+
+### Table Commande
+
+| Colonne     | Type         | Contraintes       |
+| ----------- | ------------ | ----------------- |
+| `id`        | BIGINT       | Clé Primaire      |
+| `user_id`   | BIGINT       | Non Null          |
+| `product`   | VARCHAR(255) | Non Null          |
+| `quantity`  | INT          | Non Null          |
 
 ---
 
+## Gestion des Erreurs
 
+- **400 Bad Request** : Déclenchée par une entrée invalide, comme des champs obligatoires manquants.
+- **401 Unauthorized** : Déclenchée par des jetons JWT manquants ou invalides.
+- **404 Not Found** : Déclenchée lorsque la ressource demandée n'existe pas.
+- **500 Internal Server Error** : Déclenchée par des erreurs inattendues du serveur.
 
-
+---
