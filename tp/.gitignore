@@ -36,6 +36,8 @@ tp/data/*.mv.db
 
 # Ignore additional IntelliJ IDEA specific files
 .idea/workspace.xml
+.idea/compiler.xml
+.idea/vcs.xml
 
 # Ignore data directory
 data/git
